@@ -1,6 +1,9 @@
 package com.sam_chordas.android.stockhawk.rest;
 
 import android.content.ContentProviderOperation;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
@@ -91,5 +94,22 @@ public class Utils {
       e.printStackTrace();
     }
     return builder.build();
+  }
+
+  /**
+   * Returns true if the network is available or about to become available.
+   * Taken from Advanced Android Development Sunshine App example
+   * (https://github.com/udacity/Advanced_Android_Development/blob/86eba0c4f74857e21cb066b66341297fbeb7f934/app/src/main/java/com/example/android/sunshine/app/Utility.java)
+   *
+   * @param c Context used to get the ConnectivityManager
+   * @return
+   */
+  static public boolean isNetworkAvailable(Context c) {
+    ConnectivityManager cm =
+            (ConnectivityManager)c.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+    NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+    return activeNetwork != null &&
+            activeNetwork.isConnectedOrConnecting();
   }
 }

@@ -13,6 +13,9 @@
         <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
         <uses-permission android:name="android.permission.WAKE_LOCK" />
 
+        <!--check network state to show message if unavailable-->
+        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
         <permission
             android:name="com.google.android.gcm.demo.permission.C2D_MESSAGE"
             android:protectionLevel="signature" />

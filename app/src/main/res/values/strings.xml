@@ -11,4 +11,7 @@
   <string name="input_prefill"></string>
   <string name="network_toast">Uh-oh! This app requires an internet connection</string>
   <string name="add_stock">Add Stock</string>
+  <string name="no_network_connection">No network connection available - you cannot add or update stocks without an internet connection.</string>
+  <string name="no_stocks">No stocks have been added - please add one using the + button.</string>
+  <string name="old_stocks">No network connection - your stocks were last updated on the DATE.</string>
 </resources>
