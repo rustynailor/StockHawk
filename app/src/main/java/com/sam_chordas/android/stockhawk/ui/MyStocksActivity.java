@@ -83,9 +83,6 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
       mServiceIntent.putExtra("tag", "init");
       if (isConnected){
         startService(mServiceIntent);
-      } else{
-        //TODO: remove this, handled above.
-        //networkToast();
       }
     }
     RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -126,7 +123,11 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                     toast.show();
                     return;
                   } else {
-                    // Add the stock to DB
+                    //stock does not exist in db - let's check if it exists
+
+                    //it doesn't - show error
+
+                    //it does -  Add the stock to DB
                     mServiceIntent.putExtra("tag", "add");
                     mServiceIntent.putExtra("symbol", input.toString());
                     startService(mServiceIntent);
