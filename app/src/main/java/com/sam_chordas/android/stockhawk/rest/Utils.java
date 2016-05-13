@@ -33,7 +33,7 @@ public class Utils {
         if (count == 1){
           jsonObject = jsonObject.getJSONObject("results")
               .getJSONObject("quote");
-          //check for a valid quote here?
+          //check for a valid quote here
            if(!jsonObject.getString("Change").equals("null")) {
                //basic check for null result
                batchOperations.add(buildBatchOperation(jsonObject));
@@ -45,7 +45,7 @@ public class Utils {
             for (int i = 0; i < resultsArray.length(); i++){
 
               jsonObject = resultsArray.getJSONObject(i);
-                //check for a valid quote here?
+                //check for a valid quote here
                 if(!jsonObject.getString("Change").equals("null")) {
                     batchOperations.add(buildBatchOperation(jsonObject));
                 }
