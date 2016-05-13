@@ -95,6 +95,9 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
               @Override public void onItemClick(View v, int position) {
                 //TODO:
                 // do something on item click
+                  Intent intent = new Intent(mContext, StockDetailActivity.class);
+                  mContext.startActivity(intent);
+
               }
             }));
     recyclerView.setAdapter(mCursorAdapter);
@@ -123,11 +126,8 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                     toast.show();
                     return;
                   } else {
-                    //stock does not exist in db - let's check if it exists
-
-                    //it doesn't - show error
-
-                    //it does -  Add the stock to DB
+                   //TODO: possibly show error if this stock does not exist
+                      // add new method to content provider?
                     mServiceIntent.putExtra("tag", "add");
                     mServiceIntent.putExtra("symbol", input.toString());
                     startService(mServiceIntent);
