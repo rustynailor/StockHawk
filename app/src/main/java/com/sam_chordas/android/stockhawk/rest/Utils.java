@@ -84,28 +84,36 @@ public class Utils {
   public static ContentProviderOperation buildBatchOperation(JSONObject jsonObject){
     ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(
         QuoteProvider.Quotes.CONTENT_URI);
+      boolean validData = true;
     try {
       String change = jsonObject.getString("Change");
-      //basic check for null result
-        if(!change.equals("null")) {
+
           builder.withValue(QuoteColumns.SYMBOL, jsonObject.getString("symbol"));
           String bid = jsonObject.getString("Bid");
-
-          builder.withValue(QuoteColumns.BIDPRICE, truncateBidPrice(bid));
-          builder.withValue(QuoteColumns.PERCENT_CHANGE, truncateChange(
-                  jsonObject.getString("ChangeinPercent"), true));
-          builder.withValue(QuoteColumns.CHANGE, truncateChange(change, false));
-          builder.withValue(QuoteColumns.ISCURRENT, 1);
-          if (change.charAt(0) == '-') {
-              builder.withValue(QuoteColumns.ISUP, 0);
+          //check bidprice is not null
+          if(bid.equals("null")) {
+              validData = false;
           } else {
-              builder.withValue(QuoteColumns.ISUP, 1);
-          }
+              builder.withValue(QuoteColumns.BIDPRICE, truncateBidPrice(bid));
+              builder.withValue(QuoteColumns.PERCENT_CHANGE, truncateChange(
+                      jsonObject.getString("ChangeinPercent"), true));
+              builder.withValue(QuoteColumns.CHANGE, truncateChange(change, false));
+              builder.withValue(QuoteColumns.ISCURRENT, 1);
+              if (change.charAt(0) == '-') {
+                  builder.withValue(QuoteColumns.ISUP, 0);
+              } else {
+                  builder.withValue(QuoteColumns.ISUP, 1);
+              }
+
       }
     } catch (JSONException e){
       e.printStackTrace();
     }
-    return builder.build();
+      if(validData){
+        return builder.build();
+      } else {
+          return null;
+      }
   }
 
   /**
