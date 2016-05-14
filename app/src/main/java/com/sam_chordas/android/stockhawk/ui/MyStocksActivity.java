@@ -57,6 +57,8 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
   boolean isConnected;
   private TextView mNetworkStateMessage;
 
+  public static String EXTRA_STOCK_SYMBOL = "extra_stock_symbol";
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -85,7 +87,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         startService(mServiceIntent);
       }
     }
-    RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+    final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
     getLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
 
@@ -93,9 +95,15 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     recyclerView.addOnItemTouchListener(new RecyclerViewItemClickListener(this,
             new RecyclerViewItemClickListener.OnItemClickListener() {
               @Override public void onItemClick(View v, int position) {
-                //TODO:
-                // do something on item click
+                  //get stock symbol at click position
+                  mCursorAdapter.getItemId(position);
+                  Cursor cursor = mCursorAdapter.getCursor();
+                  cursor.moveToPosition(position);
+                  String stock_symbol = cursor.getString(cursor.getColumnIndex(QuoteColumns.SYMBOL));
+                  //add this to intent
                   Intent intent = new Intent(mContext, StockDetailActivity.class);
+                  intent.putExtra(EXTRA_STOCK_SYMBOL, stock_symbol);
+                  //start detail activity
                   mContext.startActivity(intent);
 
               }
