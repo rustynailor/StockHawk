@@ -105,12 +105,14 @@ public class StockTaskService extends GcmTaskService{
         + "org%2Falltableswithkeys&callback=");
 
     String urlString;
+
     String getResponse;
     int result = GcmNetworkManager.RESULT_FAILURE;
 
     if (urlStringBuilder != null){
       urlString = urlStringBuilder.toString();
       try{
+          Log.e("URL", urlString);
         getResponse = fetchData(urlString);
         result = GcmNetworkManager.RESULT_SUCCESS;
         try {

@@ -62,15 +62,16 @@ public class StockDetailActivity extends AppCompatActivity implements LoaderMana
             int pos = 0;
             while (data.moveToNext()) {
                 String bidPrice = data.getString(data.getColumnIndex(QuoteColumns.BIDPRICE));
-                Log.d("Bidprice", bidPrice);
+                String date = data.getString(data.getColumnIndex(QuoteColumns.CREATED));
                 mValues[pos] = Float.parseFloat(bidPrice);
-                mLabels[pos] = pos + "";
+                mLabels[pos] = date;
+                //mLabels[pos] = pos + "";
                 pos++;
             }
             LineSet dataset = new LineSet(mLabels, mValues);
-            dataset.setColor(Color.parseColor("#758cbb"))
+            dataset.setColor(Color.parseColor("#2196F3"))
                     .setFill(Color.parseColor("#2d374c"))
-                    .setDotsColor(Color.parseColor("#758cbb"))
+                    .setDotsColor(Color.parseColor("#2196F3"))
                     .setThickness(4)
                     .setDashed(new float[]{10f,10f})
                     .beginAt(0);

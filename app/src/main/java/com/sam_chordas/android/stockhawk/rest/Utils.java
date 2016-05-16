@@ -30,13 +30,15 @@ public class Utils {
       if (jsonObject != null && jsonObject.length() != 0){
         jsonObject = jsonObject.getJSONObject("query");
         int count = Integer.parseInt(jsonObject.getString("count"));
+        //TODO: store created date in child objects
+        String created = jsonObject.getString("created");
         if (count == 1){
           jsonObject = jsonObject.getJSONObject("results")
               .getJSONObject("quote");
           //check for a valid quote here
            if(!jsonObject.getString("Change").equals("null")) {
                //basic check for null result
-               batchOperations.add(buildBatchOperation(jsonObject));
+               batchOperations.add(buildBatchOperation(jsonObject, created));
            }
         } else{
           resultsArray = jsonObject.getJSONObject("results").getJSONArray("quote");
@@ -47,7 +49,7 @@ public class Utils {
               jsonObject = resultsArray.getJSONObject(i);
                 //check for a valid quote here
                 if(!jsonObject.getString("Change").equals("null")) {
-                    batchOperations.add(buildBatchOperation(jsonObject));
+                    batchOperations.add(buildBatchOperation(jsonObject, created));
                 }
             }
           }
@@ -81,7 +83,7 @@ public class Utils {
     return change;
   }
 
-  public static ContentProviderOperation buildBatchOperation(JSONObject jsonObject){
+  public static ContentProviderOperation buildBatchOperation(JSONObject jsonObject, String created){
     ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(
         QuoteProvider.Quotes.CONTENT_URI);
       boolean validData = true;
@@ -99,6 +101,7 @@ public class Utils {
                       jsonObject.getString("ChangeinPercent"), true));
               builder.withValue(QuoteColumns.CHANGE, truncateChange(change, false));
               builder.withValue(QuoteColumns.ISCURRENT, 1);
+              builder.withValue(QuoteColumns.CREATED, created);
               if (change.charAt(0) == '-') {
                   builder.withValue(QuoteColumns.ISUP, 0);
               } else {
