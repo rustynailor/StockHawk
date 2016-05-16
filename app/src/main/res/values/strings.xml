@@ -15,4 +15,6 @@
     <string name="no_stocks">No stocks have been added - please add one using the + button.</string>
     <string name="old_stocks">No network connection - your stocks were last updated on the DATE.</string>
     <string name="title_activity_stock_detail">StockDetailActivity</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>
