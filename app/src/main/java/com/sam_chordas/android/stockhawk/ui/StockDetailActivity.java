@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Activity;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
@@ -69,9 +70,10 @@ public class StockDetailActivity extends AppCompatActivity implements LoaderMana
                 pos++;
             }
             LineSet dataset = new LineSet(mLabels, mValues);
-            dataset.setColor(Color.parseColor("#2196F3"))
-                    .setFill(Color.parseColor("#2d374c"))
-                    .setDotsColor(Color.parseColor("#2196F3"))
+            ContextCompat.getColor(this, R.color.material_blue_500);
+            dataset.setColor(ContextCompat.getColor(this, R.color.material_blue_500))
+                    .setFill(ContextCompat.getColor(this, R.color.line_graph_fill))
+                    .setDotsColor(ContextCompat.getColor(this, R.color.material_blue_500))
                     .setThickness(4)
                     .setDashed(new float[]{10f,10f})
                     .beginAt(0);
