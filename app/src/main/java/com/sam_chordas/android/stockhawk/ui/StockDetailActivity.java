@@ -60,12 +60,17 @@ public class StockDetailActivity extends AppCompatActivity implements LoaderMana
         if(data != null && data.getCount() > 0){
             String[] mLabels= new String[data.getCount()];
             float[] mValues = new float[data.getCount()];
+            float lowestValue = 0;
             int pos = 0;
             while (data.moveToNext()) {
                 String bidPrice = data.getString(data.getColumnIndex(QuoteColumns.BIDPRICE));
                 String date = data.getString(data.getColumnIndex(QuoteColumns.CREATED));
                 mValues[pos] = Float.parseFloat(bidPrice);
                 mLabels[pos] = date;
+                //set lowest value
+                if((lowestValue == 0) || (Float.parseFloat(bidPrice) < lowestValue)){
+                    lowestValue = Float.parseFloat(bidPrice);
+                }
                 //mLabels[pos] = pos + "";
                 pos++;
             }
@@ -76,7 +81,7 @@ public class StockDetailActivity extends AppCompatActivity implements LoaderMana
                     .setDotsColor(ContextCompat.getColor(this, R.color.material_blue_500))
                     .setThickness(4)
                     .setDashed(new float[]{10f,10f})
-                    .beginAt(0);
+                    .beginAt((int)lowestValue);
             mLineGraph.addData(dataset);
             
             mLineGraph.show();
