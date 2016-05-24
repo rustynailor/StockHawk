@@ -74,14 +74,19 @@ public class StockDetailActivity extends AppCompatActivity implements LoaderMana
                 //mLabels[pos] = pos + "";
                 pos++;
             }
+
+            //TODO: show only day by day changes (one point each)
+            //to a maximum of 10 days
+
+
             LineSet dataset = new LineSet(mLabels, mValues);
             ContextCompat.getColor(this, R.color.material_blue_500);
             dataset.setColor(ContextCompat.getColor(this, R.color.material_blue_500))
                     .setFill(ContextCompat.getColor(this, R.color.line_graph_fill))
                     .setDotsColor(ContextCompat.getColor(this, R.color.material_blue_500))
                     .setThickness(4)
-                    .setDashed(new float[]{10f,10f})
-                    .beginAt((int)lowestValue);
+                    .setDashed(new float[]{10f,10f});
+                    //.beginAt((int)lowestValue);
             mLineGraph.addData(dataset);
             
             mLineGraph.show();

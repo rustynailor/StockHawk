@@ -17,4 +17,5 @@
     <string name="title_activity_stock_detail">StockDetailActivity</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="my_stocks_widget_title">My Stocks</string>
 </resources>

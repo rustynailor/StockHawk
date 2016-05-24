@@ -2,6 +2,7 @@ package com.sam_chordas.android.stockhawk.service;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
@@ -27,6 +28,8 @@ import java.net.URLEncoder;
  */
 public class StockTaskService extends GcmTaskService{
   private String LOG_TAG = StockTaskService.class.getSimpleName();
+
+  public static final String ACTION_DATA_UPDATED = "com.sam_chordas.android.stockhawk.ACTION_DATA_UPDATED";
 
   private OkHttpClient client = new OkHttpClient();
   private Context mContext;
@@ -133,6 +136,11 @@ public class StockTaskService extends GcmTaskService{
       }
     }
 
+    //if successful, update widgets
+    if(result == GcmNetworkManager.RESULT_SUCCESS){
+        Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED);
+        mContext.sendBroadcast(dataUpdatedIntent);
+    }
     return result;
   }
 
