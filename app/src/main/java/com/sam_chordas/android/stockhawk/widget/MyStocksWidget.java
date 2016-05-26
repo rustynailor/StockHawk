@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.sam_chordas.android.stockhawk.R;
@@ -35,9 +36,13 @@ public class MyStocksWidget extends AppWidgetProvider {
             views.setOnClickPendingIntent(R.id.widget, pendingIntent);
 
             // Set up the collection
-            setRemoteAdapter(context, views);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                setRemoteAdapter(context, views);
+            } else {
+                setRemoteAdapterV11(context, views);
+            }
 
-
+            views.setEmptyView(R.id.widget_list, R.id.widget_empty);
 
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }
@@ -49,6 +54,7 @@ public class MyStocksWidget extends AppWidgetProvider {
         super.onReceive(context, intent);
 
         if (StockTaskService.ACTION_DATA_UPDATED.equals(intent.getAction())) {
+            Log.e("MyStocksWidget", "Action Data Updated Called in OnReceive");
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             int[] appWidgetIds = appWidgetManager.getAppWidgetIds(
                     new ComponentName(context, getClass()));
