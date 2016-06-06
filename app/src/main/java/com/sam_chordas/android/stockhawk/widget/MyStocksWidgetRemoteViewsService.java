@@ -27,13 +27,15 @@ public class MyStocksWidgetRemoteViewsService extends RemoteViewsService {
             QuoteDatabase.QUOTES + "." + QuoteColumns._ID,
             QuoteColumns.SYMBOL,
             QuoteColumns.BIDPRICE,
-            QuoteColumns.PERCENT_CHANGE
+            QuoteColumns.PERCENT_CHANGE,
+            QuoteColumns.ISUP
     };
     // these indices must match the projection
     static final int INDEX_STOCK_ID = 0;
     static final int INDEX_STOCK_SYMBOL = 1;
     static final int INDEX_STOCK_BIDPRICE = 2;
     static final int INDEX_STOCK_PERCENT_CHANGE = 3;
+    static final int INDEX_STOCK_IS_UP = 4;
 
 
     @Override
@@ -105,6 +107,14 @@ public class MyStocksWidgetRemoteViewsService extends RemoteViewsService {
                 views.setTextViewText(R.id.stock_symbol, stockSymbol);
                 views.setTextViewText(R.id.bid_price, bidPrice);
                 views.setTextViewText(R.id.change, stockChange);
+
+                //set percent change colour
+                if (data.getInt(INDEX_STOCK_IS_UP) == 1){
+                    views.setTextColor(R.id.change, getResources().getColor(R.color.material_green_700));
+                } else{
+                    views.setTextColor(R.id.change, getResources().getColor(R.color.material_red_700));
+                }
+
 
                 //TODO - add intent / onclick to launch activity
 
