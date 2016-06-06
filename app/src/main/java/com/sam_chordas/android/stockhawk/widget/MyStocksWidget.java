@@ -81,6 +81,7 @@ public class MyStocksWidget extends AppWidgetProvider {
     private void setRemoteAdapter(Context context, @NonNull final RemoteViews views) {
         views.setRemoteAdapter(R.id.widget_list,
                 new Intent(context, MyStocksWidgetRemoteViewsService.class));
+        Log.e("MyStocksWidget", "Remote adapter set");
     }
 
     /**
@@ -92,6 +93,7 @@ public class MyStocksWidget extends AppWidgetProvider {
     private void setRemoteAdapterV11(Context context, @NonNull final RemoteViews views) {
         views.setRemoteAdapter(0, R.id.widget_list,
                 new Intent(context, MyStocksWidgetRemoteViewsService.class));
+        Log.e("MyStocksWidget", "Remote adapter set (11)");
     }
 
 }

@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/line_graph_label">
+        android:background="@color/line_graph_fill">
         <ListView
             android:id="@+id/widget_list"
             android:layout_width="match_parent"
@@ -51,7 +51,7 @@
             android:gravity="center"
             android:fontFamily="sans-serif-condensed"
             android:textAppearance="?android:textAppearanceLarge"
-            android:text="No Stocks Available"/>
+            android:text="@string/no_stocks_available"/>
     </FrameLayout>
 
 </LinearLayout>

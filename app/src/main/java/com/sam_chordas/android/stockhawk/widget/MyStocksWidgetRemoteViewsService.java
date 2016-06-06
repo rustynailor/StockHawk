@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
+import android.util.Log;
 import android.widget.AdapterView;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -19,7 +20,6 @@ import com.sam_chordas.android.stockhawk.data.QuoteProvider;
  * Created by russellhicks on 21/05/16.
  */
 
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class MyStocksWidgetRemoteViewsService extends RemoteViewsService {
 
     public final String LOG_TAG = MyStocksWidgetRemoteViewsService.class.getSimpleName();
@@ -43,10 +43,14 @@ public class MyStocksWidgetRemoteViewsService extends RemoteViewsService {
             @Override
             public void onCreate() {
                 //nothing to do
+                Log.e(LOG_TAG, "OnCreate Called");
             }
 
             @Override
             public void onDataSetChanged() {
+
+                Log.e(LOG_TAG, "OnDataSetChanged Called ");
+
                 if (data != null) {
                     data.close();
                 }
@@ -65,6 +69,9 @@ public class MyStocksWidgetRemoteViewsService extends RemoteViewsService {
 
             @Override
             public void onDestroy() {
+
+                Log.e(LOG_TAG, "OnDestroy Called");
+
                 if (data != null) {
                     data.close();
                     data = null;
@@ -73,11 +80,15 @@ public class MyStocksWidgetRemoteViewsService extends RemoteViewsService {
 
             @Override
             public int getCount() {
+                Log.e(LOG_TAG, "getCount Called");
                 return data == null ? 0 : data.getCount();
             }
 
             @Override
             public RemoteViews getViewAt(int position) {
+
+                Log.e(LOG_TAG, "GetViewAt " + position);
+
                 if (position == AdapterView.INVALID_POSITION ||
                         data == null || !data.moveToPosition(position)) {
                     return null;
@@ -104,6 +115,7 @@ public class MyStocksWidgetRemoteViewsService extends RemoteViewsService {
 
             @Override
             public RemoteViews getLoadingView() {
+                Log.e(LOG_TAG, "getLoadingView Called");
                 return new RemoteViews(getPackageName(), R.layout.my_stocks_widget_list_item);
             }
 
@@ -114,6 +126,7 @@ public class MyStocksWidgetRemoteViewsService extends RemoteViewsService {
 
             @Override
             public long getItemId(int position) {
+                Log.e(LOG_TAG, "getItemId Called");
                 if (data.moveToPosition(position))
                     return data.getLong(INDEX_STOCK_ID);
                 return position;
