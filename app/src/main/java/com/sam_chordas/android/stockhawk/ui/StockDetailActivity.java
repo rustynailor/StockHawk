@@ -13,13 +13,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.db.chart.Tools;
 import com.db.chart.model.LineSet;
+import com.db.chart.view.AxisController;
 import com.db.chart.view.LineChartView;
 import com.db.chart.view.animation.Animation;
 import com.db.chart.view.animation.easing.BounceEase;
 import com.sam_chordas.android.stockhawk.R;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
+
+import java.util.ArrayList;
 
 public class StockDetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
@@ -52,42 +56,73 @@ public class StockDetailActivity extends AppCompatActivity implements LoaderMana
                         QuoteColumns.PERCENT_CHANGE, QuoteColumns.CHANGE, QuoteColumns.ISUP, QuoteColumns.CREATED},
                 QuoteColumns.SYMBOL + " = ?",
                 new String[]{mStockSymbol},
-                null);
+                QuoteColumns.CREATED + " desc");
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if(data != null && data.getCount() > 0){
-            String[] mLabels= new String[data.getCount()];
-            float[] mValues = new float[data.getCount()];
+
+            //use Arraylists to hold our data points
+            ArrayList<String> mLabels = new ArrayList<String>();
+            ArrayList<Float> mValues = new ArrayList<Float>();
+
             float lowestValue = 0;
             int pos = 0;
-            while (data.moveToNext()) {
+            //limit maximum data points
+            int maxDataPoints = 10;
+            while (data.moveToNext() && pos <= maxDataPoints) {
+
                 String bidPrice = data.getString(data.getColumnIndex(QuoteColumns.BIDPRICE));
-                String date = data.getString(data.getColumnIndex(QuoteColumns.CREATED));
-                mValues[pos] = Float.parseFloat(bidPrice);
-                mLabels[pos] = date;
-                //set lowest value
-                if((lowestValue == 0) || (Float.parseFloat(bidPrice) < lowestValue)){
-                    lowestValue = Float.parseFloat(bidPrice);
+
+                if(bidPrice != null){
+                    String date = data.getString(data.getColumnIndex(QuoteColumns.CREATED));
+
+                    if(date == null)
+                    {
+                        date = pos + "";
+                    }
+
+
+                    mValues.add(Float.parseFloat(bidPrice));
+                    mLabels.add(date);
+                    //set lowest value
+                    if((lowestValue == 0) || (Float.parseFloat(bidPrice) < lowestValue)){
+                        lowestValue = Float.parseFloat(bidPrice);
+                    }
                 }
                 //mLabels[pos] = pos + "";
                 pos++;
             }
 
             //TODO: show only day by day changes (one point each)
-            //to a maximum of 10 days
 
+            //convert arraylists to arrays
+            float[] mValuesArray = new float[mValues.size()];
+            int i = 0;
+            for (Float f : mValues) {
+                mValuesArray[i++] = (f);
+            }
 
-            LineSet dataset = new LineSet(mLabels, mValues);
+            String[] mLabelsArray = mLabels.toArray(new String[0]);
+
+            LineSet dataset = new LineSet(mLabelsArray, mValuesArray);
             ContextCompat.getColor(this, R.color.material_blue_500);
             dataset.setColor(ContextCompat.getColor(this, R.color.material_blue_500))
                     .setFill(ContextCompat.getColor(this, R.color.line_graph_fill))
                     .setDotsColor(ContextCompat.getColor(this, R.color.material_blue_500))
                     .setThickness(4)
                     .setDashed(new float[]{10f,10f});
-                    //.beginAt((int)lowestValue);
+                    //.beginAt((int)lowestValue); // wrong - need to set chart threshold
             mLineGraph.addData(dataset);
+
+            //todo- pasted to test from here
+            mLineGraph.setBorderSpacing(Tools.fromDpToPx(15))
+                    .setAxisBorderValues(0, 20)
+                    .setYLabels(AxisController.LabelPosition.NONE)
+                    .setLabelsColor(Color.parseColor("#6a84c3"))
+                    .setXAxis(false)
+                    .setYAxis(false);
             
             mLineGraph.show();
         }
