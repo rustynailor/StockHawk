@@ -15,9 +15,12 @@ import com.sam_chordas.android.stockhawk.R;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteDatabase;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
+import com.sam_chordas.android.stockhawk.ui.MyStocksActivity;
+import com.sam_chordas.android.stockhawk.ui.StockDetailActivity;
 
 /**
  * Created by russellhicks on 21/05/16.
+ * based on code from Udacity advanced android applications course
  */
 
 public class MyStocksWidgetRemoteViewsService extends RemoteViewsService {
@@ -45,13 +48,10 @@ public class MyStocksWidgetRemoteViewsService extends RemoteViewsService {
             @Override
             public void onCreate() {
                 //nothing to do
-                Log.e(LOG_TAG, "OnCreate Called");
             }
 
             @Override
             public void onDataSetChanged() {
-
-                Log.e(LOG_TAG, "OnDataSetChanged Called ");
 
                 if (data != null) {
                     data.close();
@@ -72,8 +72,6 @@ public class MyStocksWidgetRemoteViewsService extends RemoteViewsService {
             @Override
             public void onDestroy() {
 
-                Log.e(LOG_TAG, "OnDestroy Called");
-
                 if (data != null) {
                     data.close();
                     data = null;
@@ -82,14 +80,11 @@ public class MyStocksWidgetRemoteViewsService extends RemoteViewsService {
 
             @Override
             public int getCount() {
-                Log.e(LOG_TAG, "getCount Called");
                 return data == null ? 0 : data.getCount();
             }
 
             @Override
             public RemoteViews getViewAt(int position) {
-
-                Log.e(LOG_TAG, "GetViewAt " + position);
 
                 if (position == AdapterView.INVALID_POSITION ||
                         data == null || !data.moveToPosition(position)) {
@@ -115,8 +110,10 @@ public class MyStocksWidgetRemoteViewsService extends RemoteViewsService {
                     views.setTextColor(R.id.change, getResources().getColor(R.color.material_red_700));
                 }
 
-
-                //TODO - add intent / onclick to launch activity
+                //add intent extra for individual stock detail view
+                final Intent fillInIntent = new Intent();
+                fillInIntent.putExtra(MyStocksActivity.EXTRA_STOCK_SYMBOL, stockSymbol);
+                views.setOnClickFillInIntent(R.id.widget_list_item, fillInIntent);
 
 
                 return views;
@@ -125,7 +122,6 @@ public class MyStocksWidgetRemoteViewsService extends RemoteViewsService {
 
             @Override
             public RemoteViews getLoadingView() {
-                Log.e(LOG_TAG, "getLoadingView Called");
                 return new RemoteViews(getPackageName(), R.layout.my_stocks_widget_list_item);
             }
 
@@ -136,7 +132,6 @@ public class MyStocksWidgetRemoteViewsService extends RemoteViewsService {
 
             @Override
             public long getItemId(int position) {
-                Log.e(LOG_TAG, "getItemId Called");
                 if (data.moveToPosition(position))
                     return data.getLong(INDEX_STOCK_ID);
                 return position;

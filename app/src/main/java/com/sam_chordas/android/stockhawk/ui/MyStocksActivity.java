@@ -134,7 +134,6 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                     toast.show();
                     return;
                   } else {
-                   //TODO: possibly show error if this stock does not exist
                       // add new method to content provider?
                     mServiceIntent.putExtra("tag", "add");
                     mServiceIntent.putExtra("symbol", input.toString());
