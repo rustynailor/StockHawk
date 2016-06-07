@@ -115,7 +115,6 @@ public class StockTaskService extends GcmTaskService{
     if (urlStringBuilder != null){
       urlString = urlStringBuilder.toString();
       try{
-          Log.e("URL", urlString);
         getResponse = fetchData(urlString);
         result = GcmNetworkManager.RESULT_SUCCESS;
         try {
@@ -140,7 +139,6 @@ public class StockTaskService extends GcmTaskService{
     if(result == GcmNetworkManager.RESULT_SUCCESS){
         Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED);
         mContext.sendBroadcast(dataUpdatedIntent);
-        Log.e(LOG_TAG, "Action Data Updated Called");
     }
     return result;
   }

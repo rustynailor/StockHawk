@@ -58,13 +58,11 @@ public class MyStocksWidget extends AppWidgetProvider {
         }
     }
 
-    //TODO: START HERE
     @Override
     public void onReceive(@NonNull Context context, @NonNull Intent intent) {
         super.onReceive(context, intent);
 
         if (StockTaskService.ACTION_DATA_UPDATED.equals(intent.getAction())) {
-            Log.e("MyStocksWidget", "Action Data Updated Called in OnReceive");
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             int[] appWidgetIds = appWidgetManager.getAppWidgetIds(
                     new ComponentName(context, getClass()));
@@ -91,7 +89,6 @@ public class MyStocksWidget extends AppWidgetProvider {
     private void setRemoteAdapter(Context context, @NonNull final RemoteViews views) {
         views.setRemoteAdapter(R.id.widget_list,
                 new Intent(context, MyStocksWidgetRemoteViewsService.class));
-        Log.e("MyStocksWidget", "Remote adapter set");
     }
 
     /**
@@ -103,7 +100,6 @@ public class MyStocksWidget extends AppWidgetProvider {
     private void setRemoteAdapterV11(Context context, @NonNull final RemoteViews views) {
         views.setRemoteAdapter(0, R.id.widget_list,
                 new Intent(context, MyStocksWidgetRemoteViewsService.class));
-        Log.e("MyStocksWidget", "Remote adapter set (11)");
     }
 
 }
