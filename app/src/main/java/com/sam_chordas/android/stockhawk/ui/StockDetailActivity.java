@@ -23,7 +23,10 @@ import com.sam_chordas.android.stockhawk.R;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class StockDetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
@@ -68,34 +71,64 @@ public class StockDetailActivity extends AppCompatActivity implements LoaderMana
             ArrayList<Float> mValues = new ArrayList<Float>();
 
             float lowestValue = 0;
+            float highestValue = 0;
             int pos = 0;
             //limit maximum data points
-            int maxDataPoints = 10;
+            int maxDataPoints = 29;
+
+            //flag for first run through
+            boolean firstDataPoint = true;
+
+            //show data
             while (data.moveToNext() && pos <= maxDataPoints) {
+
+                //if this is the first item, make sure we are at the start
+                //of the cursor
+                //(in case of screen rotation)
+                if(firstDataPoint){
+                    firstDataPoint = false;
+                    data.moveToPosition(0);
+                }
 
                 String bidPrice = data.getString(data.getColumnIndex(QuoteColumns.BIDPRICE));
 
                 if(bidPrice != null){
-                    String date = data.getString(data.getColumnIndex(QuoteColumns.CREATED));
-
-                    if(date == null)
-                    {
-                        date = pos + "";
-                    }
-
 
                     mValues.add(Float.parseFloat(bidPrice));
-                    mLabels.add(date);
+
+                    String date = data.getString(data.getColumnIndex(QuoteColumns.CREATED));
+
+                    if(date == null || pos % 5 != 0)
+                    {
+                        //if date is null, add empty label
+                        mLabels.add("");
+                    } else {
+                        //show label every 5 rows
+                        //attempt to parse date
+                        SimpleDateFormat receivedFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                        Date convertedDate = new Date();
+                        try {
+                            convertedDate = receivedFormat.parse(date);
+                            SimpleDateFormat displayFormat = new SimpleDateFormat("MM/dd");
+                            mLabels.add(displayFormat.format(convertedDate));
+                        } catch (ParseException e) {
+                            //can't parse date - set label as empty string
+                            mLabels.add("");
+                        }
+                    }
+
                     //set lowest value
                     if((lowestValue == 0) || (Float.parseFloat(bidPrice) < lowestValue)){
                         lowestValue = Float.parseFloat(bidPrice);
                     }
+                    //set highest value
+                    if((highestValue == 0) || (Float.parseFloat(bidPrice) > highestValue)){
+                        highestValue = Float.parseFloat(bidPrice);
+                    }
+
                 }
-                //mLabels[pos] = pos + "";
                 pos++;
             }
-
-            //TODO: show only day by day changes (one point each)
 
             //convert arraylists to arrays
             float[] mValuesArray = new float[mValues.size()];
@@ -113,17 +146,13 @@ public class StockDetailActivity extends AppCompatActivity implements LoaderMana
                     .setDotsColor(ContextCompat.getColor(this, R.color.material_blue_500))
                     .setThickness(4)
                     .setDashed(new float[]{10f,10f});
-                    //.beginAt((int)lowestValue); // wrong - need to set chart threshold
             mLineGraph.addData(dataset);
 
-            //todo- pasted to test from here
-            mLineGraph.setBorderSpacing(Tools.fromDpToPx(15))
-                    .setAxisBorderValues(0, 20)
-                    .setYLabels(AxisController.LabelPosition.NONE)
-                    .setLabelsColor(Color.parseColor("#6a84c3"))
-                    .setXAxis(false)
-                    .setYAxis(false);
-            
+            //set highest and lowest labels on graph
+            int intLowest = (int)Math.floor((double) lowestValue);
+            int intHighest = (int)Math.ceil((double)highestValue);
+            mLineGraph.setAxisBorderValues(intLowest, intHighest);
+
             mLineGraph.show();
         }
     }
