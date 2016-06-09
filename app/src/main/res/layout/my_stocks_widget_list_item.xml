@@ -20,7 +20,7 @@
              android:id="@+id/widget_list_item"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
-             android:background="@color/line_graph_fill"
+             android:background="@color/darker_blue_background"
     >
 
     <LinearLayout

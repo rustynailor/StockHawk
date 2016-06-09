@@ -72,10 +72,6 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     if(!isConnected){
       mNetworkStateMessage.setVisibility(View.VISIBLE);
     }
-    //TODO: update error container so it shows:
-    //1. a message urging the addition of stocks if there are none.
-    //2. a message showing date last updated if network is unavailable
-    //3. enable a listener to turn network message off if state changes
 
     // The intent service is for executing immediate pulls from the Yahoo API
     // GCMTaskService can only schedule tasks, they cannot execute immediately

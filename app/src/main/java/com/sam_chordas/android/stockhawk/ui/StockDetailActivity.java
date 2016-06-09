@@ -135,7 +135,7 @@ public class StockDetailActivity extends AppCompatActivity implements LoaderMana
             LineSet dataset = new LineSet(mLabelsArray, mValuesArray);
             ContextCompat.getColor(this, R.color.material_blue_500);
             dataset.setColor(ContextCompat.getColor(this, R.color.material_blue_500))
-                    .setFill(ContextCompat.getColor(this, R.color.line_graph_fill))
+                    .setFill(ContextCompat.getColor(this, R.color.darker_blue_background))
                     .setDotsColor(ContextCompat.getColor(this, R.color.material_blue_500))
                     .setThickness(4)
                     .setDashed(new float[]{10f,10f});
