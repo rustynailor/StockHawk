@@ -1,20 +1,16 @@
 <resources>
     <string name="app_name">Stock Hawk</string>
-
-    <string name="action_example">Example action</string>
-
     <string name="action_settings">Settings</string>
     <string name="action_change_units">Change Units</string>
     <string name="symbol_search">Symbol Search</string>
     <string name="content_test">Search for a Stock Symbol</string>
-    <string name="input_hint">FB</string>
+    <string name="input_hint" translatable="false">FB</string>
     <string name="input_prefill"></string>
     <string name="network_toast">Uh-oh! This app requires an internet connection</string>
     <string name="add_stock">Add Stock</string>
     <string name="no_network_connection">No network connection available - you cannot add or update stocks without an internet connection.</string>
     <string name="no_stocks">No stocks have been added - please add one using the + button.</string>
-    <string name="old_stocks">No network connection - your stocks were last updated on the DATE.</string>
-    <string name="title_activity_stock_detail">StockDetailActivity</string>
+    <string name="title_activity_stock_detail">Stock Details</string>
     <string name="add_widget">Add widget</string>
     <string name="my_stocks_widget_title">My Stocks</string>
     <string name="no_stocks_available">No Stocks Available</string>
