@@ -57,12 +57,14 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
   boolean isConnected;
   private TextView mNetworkStateMessage;
 
-  public static String EXTRA_STOCK_SYMBOL = "extra_stock_symbol";
+  public static String EXTRA_STOCK_SYMBOL;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     mContext = this;
+
+    EXTRA_STOCK_SYMBOL = mContext.getString(R.string.extra_stock_symbol);
     //check networl connectivity
     isConnected = isNetworkAvailable(mContext);
     setContentView(R.layout.activity_my_stocks);
@@ -78,7 +80,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     mServiceIntent = new Intent(this, StockIntentService.class);
     if (savedInstanceState == null){
       // Run the initialize task service so that some stocks appear upon an empty database
-      mServiceIntent.putExtra("tag", "init");
+      mServiceIntent.putExtra(getString(R.string.stock_tag), getString(R.string.stock_init));
       if (isConnected){
         startService(mServiceIntent);
       }
@@ -124,15 +126,15 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                       new String[] { input.toString().toUpperCase() }, null);
                   if (c.getCount() != 0) {
                     Toast toast =
-                        Toast.makeText(MyStocksActivity.this, "This stock is already saved!",
+                        Toast.makeText(MyStocksActivity.this, R.string.already_saved_error,
                             Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER, Gravity.CENTER, 0);
                     toast.show();
                     return;
                   } else {
                       // add new method to content provider?
-                    mServiceIntent.putExtra("tag", "add");
-                    mServiceIntent.putExtra("symbol", input.toString());
+                    mServiceIntent.putExtra(getString(R.string.stock_tag), getString(R.string.stock_add));
+                    mServiceIntent.putExtra(getString(R.string.symbol), input.toString());
                     startService(mServiceIntent);
                   }
                 }
@@ -153,7 +155,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     if (isConnected){
       long period = 3600L;
       long flex = 10L;
-      String periodicTag = "periodic";
+      String periodicTag = getString(R.string.periodic);
 
       // create a periodic task to pull stocks once every hour after the app has been opened. This
       // is so Widget data stays up to date.

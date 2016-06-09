@@ -14,4 +14,11 @@
     <string name="add_widget">Add widget</string>
     <string name="my_stocks_widget_title">My Stocks</string>
     <string name="no_stocks_available">No Stocks Available</string>
+    <string name="extra_stock_symbol" translatable="false">extra_stock_symbol</string>
+    <string name="stock_tag" translatable="false">tag</string>
+    <string name="stock_init" translatable="false">init</string>
+    <string name="already_saved_error">This stock is already saved!</string>
+    <string name="stock_add" translatable="false">add</string>
+    <string name="symbol" translatable="false">symbol</string>
+    <string name="periodic" translatable="false">periodic</string>
 </resources>
